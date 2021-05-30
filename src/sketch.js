@@ -39,7 +39,8 @@ function setup() {
   myHeight = floor(windowHeight / 100) * 100;
 
   inititalizeGlobalVariables();
-  let div = createDiv().addClass('wrapper').size(myWidth);
+  let div = document.querySelector('#wrapper');
+  div.addClass('wrapper');
   createCanvas(myWidth, myHeight).parent(div).addClass('canvas');
 
   buttonRegenerateFlowfield = createButton("Regenerate Flowfield").addClass('button').parent(div);
