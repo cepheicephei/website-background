@@ -40,7 +40,7 @@ function setup() {
 
   inititalizeGlobalVariables();
   let div = document.querySelector('#wrapper');
-  div.addClass('wrapper');
+  // div.addClass('wrapper');
   createCanvas(myWidth, myHeight).parent(div).addClass('canvas');
 
   buttonRegenerateFlowfield = createButton("Regenerate Flowfield").addClass('button').parent(div);
