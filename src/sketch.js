@@ -167,7 +167,7 @@ class Flowfield {
   }
 
   getFlowPointByCanvasPosition(canvasPosition) {
-    let index = floor(canvasPosition.x / this.stepSize) + floor(canvasPosition.y / this.stepSize) * (this.width / this.stepSize);
+    let index = floor(canvasPosition.x / this.stepSize) + floor(canvasPosition.y / this.stepSize) * floor(this.width / this.stepSize);
     return index;
   }
 }
@@ -204,7 +204,7 @@ class Particle {
 
   move() {
     let index = 0;
-    let p = flowfield.flowPoints[0];
+    let p;
     try {
       index = flowfield.getFlowPointByCanvasPosition(this.position);
     } catch (e) {
