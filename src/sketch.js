@@ -17,7 +17,7 @@ let sliderMaxParticles, sliderSpeed;
 function inititalizeGlobalVariables() {
   // stepSize = parseInt(random(10, 20));
   stepSize = 5;
-  border = 40;
+  border = 0;
   pause = false;
   showFlowfield = false;
   colored = false;
@@ -35,6 +35,7 @@ let canvasHeight;
 
 function setup() {
   let div = document.querySelector('#wrapper');
+
   canvasWidth = div.clientWidth;
   canvasHeight = div.clientHeight;
   // let div = createDiv().addClass('wrapper');
@@ -219,9 +220,7 @@ class Particle {
     if (this.isMoving) {
       let xMove = sin(p.r * TWO_PI) * this.moveSpeed + this.position.x;
       let yMove = cos(p.r * TWO_PI) * this.moveSpeed + this.position.y;
-      if (
-        xMove >= this.border && xMove <= width - this.border && yMove >= this.border && yMove <= height - this.border
-      ) {
+      if (xMove >= this.border && xMove <= width - this.border && yMove >= this.border && yMove <= height - this.border) {
         this.position.x = xMove;
         this.position.y = yMove;
       } else {
