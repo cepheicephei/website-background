@@ -112,7 +112,7 @@ class Flowfield {
     this.xvals = 0;
     this.yvals = 0;
 
-    let increment = random(0.001, 0.01);
+    this.increment = random(0.001, 0.01);
     noiseDetail(parseInt(random(8)), random(0.9));
     // 4, 0.9 are good values!
     noiseSeed(parseInt(random(100)));
@@ -120,12 +120,12 @@ class Flowfield {
     this.yoff = 0.0;
     for (let y = 0; y < this.height; y += this.stepSize) {
       this.yvals++;
-      this.yoff += increment;
+      this.yoff += this.increment;
       this.xoff = 0.0;
       this.xvals = 0;
       for (let x = 0; x < this.width; x += this.stepSize) {
         this.xvals++;
-        this.xoff += increment;
+        this.xoff += this.increment;
         this.flowPoints.push(
           {
             x: x,
