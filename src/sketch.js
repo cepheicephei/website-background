@@ -36,8 +36,8 @@ let canvasHeight;
 function setup() {
   let div = document.querySelector('#wrapper');
 
-  canvasWidth = div.clientWidth;
-  canvasHeight = div.clientHeight;
+  canvasWidth = floor(div.clientWidth);
+  canvasHeight = floor(div.clientHeight);
   // let div = createDiv().addClass('wrapper');
   // div.mousePressed(() => { flowfield = new Flowfield(stepSize, canvasWidth, canvasHeight); particles = [] });
   createCanvas(canvasWidth, canvasHeight).parent(div).addClass('canvas');
