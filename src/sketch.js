@@ -76,41 +76,45 @@ function setup() {
 }
 
 function windowResized() {
+  pause = true;
   canvasWidth = ceil(div.clientWidth);
   canvasHeight = ceil(div.clientHeight);
   resizeCanvas(canvasWidth, canvasHeight);
   flowfield = new Flowfield(stepSize, canvasWidth, canvasHeight);
   particles = [];
+  pause = false;
 }
 
 function draw() {
-  for (let speedUp = 0; speedUp < 2; ++speedUp) {
-    background(255);
+  if (!pause) {
+    for (let speedUp = 0; speedUp < 2; ++speedUp) {
+      background(255);
 
-    if (!pause) {
-      if (particles.length >= particleAmount) {
-        // particles.splice(0, particles.length - particleAmount);
-        flowfield = new Flowfield(stepSize, canvasWidth, canvasHeight);
-        particles = [];
+      if (!pause) {
+        if (particles.length >= particleAmount) {
+          // particles.splice(0, particles.length - particleAmount);
+          flowfield = new Flowfield(stepSize, canvasWidth, canvasHeight);
+          particles = [];
+        }
+        particles.push(new Particle(random(border, canvasWidth - border), random(border, canvasHeight - border), border, colored));
       }
-      particles.push(new Particle(random(border, canvasWidth - border), random(border, canvasHeight - border), border, colored));
+
+      for (let i = 0; i < particles.length; ++i) {
+        let p = particles[i];
+        if (!pause)
+          p.physics();
+        p.removeLoose();
+        if (p.removeFlag)
+          particles.splice(i, 1);
+      }
     }
+
+    if (showFlowfield)
+      flowfield.render("arrow");
 
     for (let i = 0; i < particles.length; ++i) {
-      let p = particles[i];
-      if (!pause)
-        p.physics();
-      p.removeLoose();
-      if (p.removeFlag)
-        particles.splice(i, 1);
+      particles[i].render();
     }
-  }
-
-  if (showFlowfield)
-    flowfield.render("arrow");
-
-  for (let i = 0; i < particles.length; ++i) {
-    particles[i].render();
   }
 }
 
