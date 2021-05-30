@@ -40,7 +40,7 @@ function setup() {
 
   let div = document.querySelector('#wrapper');
   myWidth = floor(div.clientWidth / 100) * 100;
-  myHeight = floor(windowHeight / 100) * 100;
+  myHeight = floor(div.clientHeight / 100) * 100;
   inititalizeGlobalVariables();
   // div.addClass('wrapper');
   createCanvas(myWidth, myHeight).parent(div).addClass('canvas');
