@@ -23,25 +23,31 @@ function inititalizeGlobalVariables() {
   colored = false;
   particleAmount = 1000;
 
-  flowfield = new Flowfield(stepSize, windowWidth, windowHeight);
+  flowfield = new Flowfield(stepSize, canvasWidth, canvasHeight);
 
   white = color(245);
   black = color(40);
   blue = color(80, 80, 220);
 }
 
+let canvasWidth;
+let canvasHeight;
+
 function setup() {
   let div = document.querySelector('#wrapper');
-  // div.mousePressed(() => { flowfield = new Flowfield(stepSize, windowWidth, windowHeight); particles = [] });
-  createCanvas(windowWidth, windowHeight).parent(div).addClass('canvas');
-  // myWidth = floor(windowWidth / 100) * 100;
-  // myHeight = floor(windowHeight / 100) * 100;
+  canvasWidth = div.clientWidth;
+  canvasHeight = div.clientHeight;
+  // let div = createDiv().addClass('wrapper');
+  // div.mousePressed(() => { flowfield = new Flowfield(stepSize, canvasWidth, canvasHeight); particles = [] });
+  createCanvas(canvasWidth, canvasHeight).parent(div).addClass('canvas');
+  // myWidth = floor(canvasWidth / 100) * 100;
+  // myHeight = floor(canvasHeight / 100) * 100;
 
   inititalizeGlobalVariables();
   // div.addClass('wrapper');
 
   // buttonRegenerateFlowfield = createButton("Regenerate Flowfield").addClass('button').parent(div);
-  // buttonRegenerateFlowfield.mouseClicked(() => { flowfield = new Flowfield(stepSize, windowWidth, windowHeight); particles = [] });
+  // buttonRegenerateFlowfield.mouseClicked(() => { flowfield = new Flowfield(stepSize, canvasWidth, canvasHeight); particles = [] });
 
   // buttonClear = createButton("Clear").addClass('button').parent(div);
   // buttonClear.mouseClicked(() => { particles = [] });
@@ -76,7 +82,7 @@ function draw() {
       if (particles.length >= particleAmount) {
         particles.splice(0, particles.length - particleAmount);
       }
-      particles.push(new Particle(random(border, windowWidth - border), random(border, windowHeight - border), border, colored));
+      particles.push(new Particle(random(border, canvasWidth - border), random(border, canvasHeight - border), border, colored));
     }
 
     for (let i = 0; i < particles.length; ++i) {
