@@ -16,12 +16,12 @@ let sliderMaxParticles, sliderSpeed;
 
 function inititalizeGlobalVariables() {
   // stepSize = parseInt(random(10, 20));
-  stepSize = 10;
+  stepSize = 8;
   border = 0;
   pause = false;
   showFlowfield = false;
   colored = false;
-  particleAmount = 600;
+  particleAmount = 800;
 
   flowfield = new Flowfield(stepSize, canvasWidth, canvasHeight);
 
@@ -113,7 +113,7 @@ class Flowfield {
     this.width = width;
     this.height = height;
 
-    let increment = random(0.001, 0.1);
+    let increment = random(0.001, 0.01);
     noiseDetail(parseInt(random(8)), parseInt(random(1)));
     // 4, 0.9 are good values!
     noiseSeed(parseInt(random(100)));
@@ -195,7 +195,7 @@ class Particle {
     if (colored)
       stroke(this.color);
     else
-      stroke(180);
+      stroke(200);
     beginShape();
     for (let i = 0; i < this.vertices.length; ++i) {
       let v = this.vertices[i];
