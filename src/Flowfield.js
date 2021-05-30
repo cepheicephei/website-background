@@ -1,8 +1,8 @@
 class Flowfield {
   constructor(_resolution, width, height) {
     this.resolution = _resolution;
-    this.fieldWidth = width / this.resolution;
-    this.fieldHeight = height / this.resolution;
+    this.fieldWidth = parseInt(width / this.resolution);
+    this.fieldHeight = parseInt(height / this.resolution);
     this.flowPoints = [];
     this.width = width;
     this.height = height;

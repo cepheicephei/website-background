@@ -1,5 +1,5 @@
 // DECLARE GLOABAL VARIABLES
-let steps, border, yOff, pause, showFlowfield, colored;
+let steps, border, yOff, pause, showFlowfield, colored, particleAmount;
 let particles = [];
 let flowfield;
 
@@ -13,19 +13,20 @@ let buttonPause, buttonResume, buttonClear, buttonToggleFlowfield, buttonRegener
 let sliderMaxParticles, sliderSpeed;
 
 // DECLARE CONSTANTS
-const paperWidth = 800;
-const paperHeight = 600;
+let myWidth;
+let myHeight;
 
 function inititalizeGlobalVariables() {
   // steps = parseInt(random(10, 20));
-  steps = 8;
+  steps = 10;
   border = 40;
   yOff = 10;
   pause = false;
   showFlowfield = false;
   colored = false;
+  particleAmount = 4000;
 
-  flowfield = new Flowfield(steps, paperWidth, paperHeight);
+  flowfield = new Flowfield(steps, myWidth, myHeight);
   flowfield.generate();
 
   white = color(245);
@@ -34,24 +35,27 @@ function inititalizeGlobalVariables() {
 }
 
 function setup() {
+  myWidth = floor(windowWidth / 100) * 100;
+  myHeight = floor(windowHeight / 100) * 100;
+
   inititalizeGlobalVariables();
-  let div = createDiv().addClass('wrapper').size(paperWidth);
-  createCanvas(paperWidth, paperHeight).parent(div).addClass('canvas');
+  let div = createDiv().addClass('wrapper').size(myWidth);
+  createCanvas(myWidth, myHeight).parent(div).addClass('canvas');
 
   buttonRegenerateFlowfield = createButton("Regenerate Flowfield").addClass('button').parent(div);
   buttonRegenerateFlowfield.mouseClicked(() => { flowfield.generate(); particles = [] });
 
-  buttonClear = createButton("Clear").addClass('button').parent(div);
-  buttonClear.mouseClicked(() => { particles = [] });
+  // buttonClear = createButton("Clear").addClass('button').parent(div);
+  // buttonClear.mouseClicked(() => { particles = [] });
 
-  buttonPause = createButton("Pause").addClass('button').parent(div);
-  buttonPause.mouseClicked(() => { pause = true });
+  // buttonPause = createButton("Pause").addClass('button').parent(div);
+  // buttonPause.mouseClicked(() => { pause = true });
 
-  buttonResume = createButton("Resume").addClass('button').parent(div);
-  buttonResume.mouseClicked(() => { pause = false });
+  // buttonResume = createButton("Resume").addClass('button').parent(div);
+  // buttonResume.mouseClicked(() => { pause = false });
 
-  buttonToggleFlowfield = createButton("Toggle Flowfield").addClass('button').parent(div);
-  buttonToggleFlowfield.mouseClicked(() => { showFlowfield = !showFlowfield });
+  // buttonToggleFlowfield = createButton("Toggle Flowfield").addClass('button').parent(div);
+  // buttonToggleFlowfield.mouseClicked(() => { showFlowfield = !showFlowfield });
 
   buttonToggleColored = createButton("Toggle Color").addClass('button').parent(div);
   buttonToggleColored.mouseClicked(() => {
@@ -61,20 +65,20 @@ function setup() {
     })
   });
 
-  sliderMaxParticles = createSlider(1, 10000, 2000, 1).addClass('slider').parent(div);
-  sliderSpeed = createSlider(1, 200, 20, 1).addClass('slider').parent(div);
+  // sliderMaxParticles = createSlider(1, 10000, 2000, 1).addClass('slider').parent(div);
+  // sliderSpeed = createSlider(1, 200, 20, 1).addClass('slider').parent(div);
 }
 
 function draw() {
-  for (let speedUp = 0; speedUp < sliderSpeed.value(); ++speedUp) {
-    background(black);
+  for (let speedUp = 0; speedUp < 20; ++speedUp) {
+    background(255);
 
     // if (frameCount % 1 === 0)
     if (!pause) {
-      if (particles.length >= sliderMaxParticles.value()) {
-        particles.splice(0, particles.length - sliderMaxParticles.value());
+      if (particles.length >= particleAmount) {
+        particles.splice(0, particles.length - particleAmount);
       }
-      particles.push(new Particle(random(border, paperWidth - border), random(border, paperHeight - border), border, flowfield, colored));
+      particles.push(new Particle(random(border, myWidth - border), random(border, myHeight - border), border, flowfield, colored));
     }
 
     for (let i = 0; i < particles.length; ++i) {
