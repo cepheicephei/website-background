@@ -16,12 +16,12 @@ let sliderMaxParticles, sliderSpeed;
 
 function inititalizeGlobalVariables() {
   // stepSize = parseInt(random(10, 20));
-  stepSize = 5;
+  stepSize = 10;
   border = 0;
   pause = false;
   showFlowfield = false;
   colored = false;
-  particleAmount = 1000;
+  particleAmount = 600;
 
   flowfield = new Flowfield(stepSize, canvasWidth, canvasHeight);
 
@@ -36,8 +36,8 @@ let canvasHeight;
 function setup() {
   let div = document.querySelector('#wrapper');
 
-  canvasWidth = floor(div.clientWidth);
-  canvasHeight = floor(div.clientHeight);
+  canvasWidth = ceil(div.clientWidth);
+  canvasHeight = ceil(div.clientHeight);
   // let div = createDiv().addClass('wrapper');
   // div.mousePressed(() => { flowfield = new Flowfield(stepSize, canvasWidth, canvasHeight); particles = [] });
   createCanvas(canvasWidth, canvasHeight).parent(div).addClass('canvas');
@@ -76,7 +76,7 @@ function setup() {
 
 function draw() {
 
-  for (let speedUp = 0; speedUp < 20; ++speedUp) {
+  for (let speedUp = 0; speedUp < 1; ++speedUp) {
     background(255);
 
     if (!pause) {
