@@ -35,11 +35,13 @@ function inititalizeGlobalVariables() {
 }
 
 function setup() {
-  myWidth = floor(windowWidth / 100) * 100;
-  myHeight = floor(windowHeight / 100) * 100;
+  // myWidth = floor(windowWidth / 100) * 100;
+  // myHeight = floor(windowHeight / 100) * 100;
 
   inititalizeGlobalVariables();
   let div = document.querySelector('#wrapper');
+  myWidth = floor(div.clientWidth / 100) * 100;
+  myHeight = floor(windowHeight / 100) * 100;
   // div.addClass('wrapper');
   createCanvas(myWidth, myHeight).parent(div).addClass('canvas');
 
