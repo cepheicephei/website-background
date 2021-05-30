@@ -76,12 +76,14 @@ function setup() {
 
 function draw() {
 
-  for (let speedUp = 0; speedUp < 1; ++speedUp) {
+  for (let speedUp = 0; speedUp < 2; ++speedUp) {
     background(255);
 
     if (!pause) {
       if (particles.length >= particleAmount) {
-        particles.splice(0, particles.length - particleAmount);
+        // particles.splice(0, particles.length - particleAmount);
+        flowfield = new Flowfield(stepSize, canvasWidth, canvasHeight);
+        particles = [];
       }
       particles.push(new Particle(random(border, canvasWidth - border), random(border, canvasHeight - border), border, colored));
     }
@@ -193,7 +195,7 @@ class Particle {
     if (colored)
       stroke(this.color);
     else
-      stroke(40);
+      stroke(40, 40);
     beginShape();
     for (let i = 0; i < this.vertices.length; ++i) {
       let v = this.vertices[i];
