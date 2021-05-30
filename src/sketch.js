@@ -17,7 +17,7 @@ let sliderMaxParticles, sliderSpeed;
 function inititalizeGlobalVariables() {
   // stepSize = parseInt(random(10, 20));
   stepSize = 5;
-  border = 0;
+  border = 40;
   pause = false;
   showFlowfield = false;
   colored = false;
