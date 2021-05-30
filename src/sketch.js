@@ -195,7 +195,7 @@ class Particle {
     if (colored)
       stroke(this.color);
     else
-      stroke(40, 40);
+      stroke(180);
     beginShape();
     for (let i = 0; i < this.vertices.length; ++i) {
       let v = this.vertices[i];
