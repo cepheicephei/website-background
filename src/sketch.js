@@ -16,7 +16,7 @@ let sliderMaxParticles, sliderSpeed;
 
 function inititalizeGlobalVariables() {
   // stepSize = parseInt(random(10, 20));
-  stepSize = 8;
+  stepSize = 10;
   border = 0;
   pause = false;
   showFlowfield = false;
@@ -32,9 +32,10 @@ function inititalizeGlobalVariables() {
 
 let canvasWidth;
 let canvasHeight;
+let div;
 
 function setup() {
-  let div = document.querySelector('#wrapper');
+  div = document.querySelector('#wrapper');
 
   canvasWidth = ceil(div.clientWidth);
   canvasHeight = ceil(div.clientHeight);
@@ -74,8 +75,15 @@ function setup() {
   // sliderSpeed = createSlider(1, 200, 20, 1).addClass('slider').parent(div);
 }
 
-function draw() {
+function windowResized() {
+  canvasWidth = ceil(div.clientWidth);
+  canvasHeight = ceil(div.clientHeight);
+  resizeCanvas(canvasWidth, canvasHeight);
+  flowfield = new Flowfield(stepSize, canvasWidth, canvasHeight);
+  particles = [];
+}
 
+function draw() {
   for (let speedUp = 0; speedUp < 2; ++speedUp) {
     background(255);
 
@@ -175,7 +183,7 @@ class Flowfield {
   }
 
   getFlowPointByCanvasPosition(canvasPosition) {
-    let index = floor(map(canvasPosition.x, 0, canvasWidth, 0, this.xvals)) + floor(map(canvasPosition.y, 0, canvasWidth, 0, this.yvals)) * this.xvals;
+    let index = floor(map(canvasPosition.x, 0, canvasWidth, 0, this.xvals)) + floor(map(canvasPosition.y, 0, canvasHeight, 0, this.yvals)) * this.xvals;
     return index;
   }
 }
