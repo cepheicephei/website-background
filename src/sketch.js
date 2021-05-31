@@ -4,7 +4,6 @@ let particles = [];
 let flowfield;
 
 // DECLARE COLORS
-let white, black, blue;
 
 // DECLARE BUTTONS
 let buttonPause, buttonResume, buttonClear, buttonRegenerateFlowfield;
@@ -18,15 +17,11 @@ function inititalizeGlobalVariables() {
   // stepSize = parseInt(random(10, 20));
   stepSize = 15;
   randomColor = color(random(140, 240), random(140, 240), random(140, 240));
-  colorVariation = 10;
+  colorVariation = 20;
   pause = false;
   particleAmount = 800;
 
   flowfield = new Flowfield(stepSize, canvasWidth, canvasHeight);
-
-  white = color(245);
-  black = color(40);
-  blue = color(80, 80, 220);
 }
 
 let canvasWidth;
@@ -72,7 +67,7 @@ function windowResized() {
   resizeCanvas(canvasWidth, canvasHeight);
   flowfield = new Flowfield(stepSize, canvasWidth, canvasHeight);
   particles = [];
-  randomColor = color(random(140, 200), random(140, 200), random(140, 200));
+  setRandomColor();
   pause = false;
 }
 
@@ -86,7 +81,7 @@ function draw() {
           // particles.splice(0, particles.length - particleAmount);
           flowfield = new Flowfield(stepSize, canvasWidth, canvasHeight);
           particles = [];
-          randomColor = color(random(140, 240), random(140, 240), random(140, 240));
+          setRandomColor();
         }
         particles.push(new Particle(random(canvasWidth), random(canvasHeight), randomColor));
       }
@@ -107,6 +102,10 @@ function draw() {
   }
 }
 
+function setRandomColor() {
+  randomColor = color(random(120, 180), random(120, 180), random(120, 180));
+}
+
 class Flowfield {
   constructor(_stepSize, width, height) {
     this.stepSize = _stepSize;
@@ -117,7 +116,7 @@ class Flowfield {
     this.xvals = 0;
     this.yvals = 0;
 
-    this.increment = random(0.001, 0.01);
+    this.increment = random(0.008, 0.04);
     noiseDetail(parseInt(random(8)), random(0.9));
     // 4, 0.9 are good values!
     noiseSeed(parseInt(random(100)));
@@ -157,7 +156,7 @@ class Particle {
 
     this.isMoving = true;
     this.removeFlag = false;
-    this.randomCol = _randomColor;
+    this.randomCol = color(red(_randomColor) + random(-colorVariation, colorVariation), blue(_randomColor) + random(-colorVariation, colorVariation), green(_randomColor) + random(-colorVariation, colorVariation));
   }
 
   render() {
