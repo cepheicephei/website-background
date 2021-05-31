@@ -34,7 +34,7 @@ function setup() {
   canvasHeight = ceil(div.clientHeight);
   createCanvas(canvasWidth, canvasHeight).parent(div).addClass('canvas');
 
-  strokeWeight(2);
+  strokeWeight(3);
   inititalizeGlobalVariables();
 }
 
