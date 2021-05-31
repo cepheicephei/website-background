@@ -19,7 +19,7 @@ function inititalizeGlobalVariables() {
   randomColor = color(random(140, 240), random(140, 240), random(140, 240));
   colorVariation = 20;
   pause = false;
-  particleAmount = 800;
+  particleAmount = 400;
 
   flowfield = new Flowfield(stepSize, canvasWidth, canvasHeight);
 }
@@ -31,7 +31,7 @@ let div;
 function setup() {
   div = document.querySelector('#wrapper');
   colorMode(RGB);
-
+  
   canvasWidth = ceil(div.clientWidth);
   canvasHeight = ceil(div.clientHeight);
   // let div = createDiv().addClass('wrapper');
@@ -39,7 +39,9 @@ function setup() {
   createCanvas(canvasWidth, canvasHeight).parent(div).addClass('canvas');
   // myWidth = floor(canvasWidth / 100) * 100;
   // myHeight = floor(canvasHeight / 100) * 100;
-
+  
+  // strokeWeight(2);
+  noFill();
   inititalizeGlobalVariables();
   // div.addClass('wrapper');
 
@@ -160,8 +162,8 @@ class Particle {
   }
 
   render() {
-    noFill();
     stroke(this.randomCol);
+    
     beginShape();
     for (let i = 0; i < this.vertices.length; ++i) {
       let v = this.vertices[i];
