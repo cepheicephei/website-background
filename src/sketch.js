@@ -86,7 +86,7 @@ function draw() {
           // particles.splice(0, particles.length - particleAmount);
           flowfield = new Flowfield(stepSize, canvasWidth, canvasHeight);
           particles = [];
-          color = color(random(140, 240), random(140, 240), random(140, 240));
+          randomColor = color(random(140, 240), random(140, 240), random(140, 240));
         }
         particles.push(new Particle(random(canvasWidth), random(canvasHeight), randomColor));
       }
