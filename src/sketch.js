@@ -4,6 +4,7 @@ let particles = [];
 let flowfield;
 
 // DECLARE COLORS
+let colors = [];
 
 
 // DECLARE SLIDERS
@@ -13,10 +14,23 @@ let sliderMaxParticles, sliderSpeed;
 
 function inititalizeGlobalVariables() {
   stepSize = 12;
-  randomColor = color(random(140, 240), random(140, 240), random(140, 240));
   colorVariation = 12;
   pause = false;
   particleAmount = 0;
+
+  colors.push(color('#FFCCCC'));
+  colors.push(color('#FFE5CC'));
+  colors.push(color('#FFFFCC'));
+  colors.push(color('#E5FFCC'));
+  colors.push(color('#CCFFCC'));
+  colors.push(color('#CCFFE5'));
+  colors.push(color('#CCFFFF'));
+  colors.push(color('#CCE5FF'));
+  colors.push(color('#CCCCFF'));
+  colors.push(color('#E5CCFF'));
+  colors.push(color('#FFCCFF'));
+  colors.push(color('#FFCCE5'));
+  setRandomColor();
 
   flowfield = new Flowfield(stepSize, canvasWidth, canvasHeight);
 }
@@ -28,7 +42,6 @@ let div;
 
 function setup() {
   div = document.querySelector('#wrapper');
-  colorMode(RGB);
   smooth();
 
   canvasWidth = ceil(div.clientWidth);
@@ -87,8 +100,14 @@ function draw() {
   // }
 }
 
+let colIndex = 0;
+
 function setRandomColor() {
-  randomColor = color(random(150, 180), random(150, 180), random(150, 180));
+  // if (colIndex >= colors.length)
+  //   colIndex = 0;
+  // randomColor = colors[colIndex];
+  // colIndex++;
+  randomColor = colors[floor(random(colors.length))];
 }
 
 class Flowfield {
