@@ -12,9 +12,9 @@ let sliderMaxParticles, sliderSpeed;
 // DECLARE CONSTANTS
 
 function inititalizeGlobalVariables() {
-  stepSize = 10;
+  stepSize = 12;
   randomColor = color(random(140, 240), random(140, 240), random(140, 240));
-  colorVariation = 20;
+  colorVariation = 12;
   pause = false;
   particleAmount = 0;
 
@@ -29,12 +29,13 @@ let div;
 function setup() {
   div = document.querySelector('#wrapper');
   colorMode(RGB);
+  smooth();
 
   canvasWidth = ceil(div.clientWidth);
   canvasHeight = ceil(div.clientHeight);
   createCanvas(canvasWidth, canvasHeight).parent(div).addClass('canvas');
 
-  strokeWeight(3);
+  strokeWeight(2);
   inititalizeGlobalVariables();
 }
 
@@ -53,7 +54,7 @@ function windowResized() {
 
 function draw() {
   if (!pause) {
-    for (let speedUp = 0; speedUp < 2; ++speedUp) {
+    for (let speedUp = 0; speedUp < 1; ++speedUp) {
       if (particleAmount >= 400) {
         flowfield = new Flowfield(stepSize, canvasWidth, canvasHeight);
         particles = [];
@@ -87,7 +88,7 @@ function draw() {
 }
 
 function setRandomColor() {
-  randomColor = color(random(120, 180), random(120, 180), random(120, 180));
+  randomColor = color(random(150, 180), random(150, 180), random(150, 180));
 }
 
 class Flowfield {
@@ -100,8 +101,9 @@ class Flowfield {
     this.xvals = 0;
     this.yvals = 0;
 
-    this.increment = random(0.008, 0.04);
-    noiseDetail(parseInt(random(8)), random(0.9));
+    this.increment = random(0.01, 0.1);
+    // noiseDetail(parseInt(random(8)), random(0.9));
+    noiseDetail(4, 0.5);
     // 4, 0.9 are good values!
     noiseSeed(parseInt(random(100)));
 
