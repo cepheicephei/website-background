@@ -5,8 +5,6 @@ let flowfield;
 
 // DECLARE COLORS
 
-// DECLARE BUTTONS
-let buttonPause, buttonResume, buttonClear, buttonRegenerateFlowfield;
 
 // DECLARE SLIDERS
 let sliderMaxParticles, sliderSpeed;
@@ -14,12 +12,11 @@ let sliderMaxParticles, sliderSpeed;
 // DECLARE CONSTANTS
 
 function inititalizeGlobalVariables() {
-  // stepSize = parseInt(random(10, 20));
-  stepSize = 15;
+  stepSize = 10;
   randomColor = color(random(140, 240), random(140, 240), random(140, 240));
   colorVariation = 20;
   pause = false;
-  particleAmount = 400;
+  particleAmount = 0;
 
   flowfield = new Flowfield(stepSize, canvasWidth, canvasHeight);
 }
@@ -28,38 +25,17 @@ let canvasWidth;
 let canvasHeight;
 let div;
 
+
 function setup() {
   div = document.querySelector('#wrapper');
   colorMode(RGB);
-  
+
   canvasWidth = ceil(div.clientWidth);
   canvasHeight = ceil(div.clientHeight);
-  // let div = createDiv().addClass('wrapper');
-  // div.mousePressed(() => { flowfield = new Flowfield(stepSize, canvasWidth, canvasHeight); particles = [] });
   createCanvas(canvasWidth, canvasHeight).parent(div).addClass('canvas');
-  // myWidth = floor(canvasWidth / 100) * 100;
-  // myHeight = floor(canvasHeight / 100) * 100;
-  
-  // strokeWeight(2);
-  noFill();
+
+  strokeWeight(2);
   inititalizeGlobalVariables();
-  // div.addClass('wrapper');
-
-  // buttonRegenerateFlowfield = createButton("Regenerate Flowfield").addClass('button').parent(div);
-  // buttonRegenerateFlowfield.mouseClicked(() => { flowfield = new Flowfield(stepSize, canvasWidth, canvasHeight); particles = [] });
-
-  // buttonClear = createButton("Clear").addClass('button').parent(div);
-  // buttonClear.mouseClicked(() => { particles = [] });
-
-  // buttonPause = createButton("Pause").addClass('button').parent(div);
-  // buttonPause.mouseClicked(() => { pause = true });
-
-  // buttonResume = createButton("Resume").addClass('button').parent(div);
-  // buttonResume.mouseClicked(() => { pause = false });
-
-
-  // sliderMaxParticles = createSlider(1, 10000, 2000, 1).addClass('slider').parent(div);
-  // sliderSpeed = createSlider(1, 200, 20, 1).addClass('slider').parent(div);
 }
 
 function windowResized() {
@@ -69,38 +45,44 @@ function windowResized() {
   resizeCanvas(canvasWidth, canvasHeight);
   flowfield = new Flowfield(stepSize, canvasWidth, canvasHeight);
   particles = [];
+  particleAmount = 0;
   setRandomColor();
+  background(255);
   pause = false;
 }
 
 function draw() {
   if (!pause) {
     for (let speedUp = 0; speedUp < 2; ++speedUp) {
-      background(255);
-
-      if (!pause) {
-        if (particles.length >= particleAmount) {
-          // particles.splice(0, particles.length - particleAmount);
-          flowfield = new Flowfield(stepSize, canvasWidth, canvasHeight);
-          particles = [];
-          setRandomColor();
-        }
-        particles.push(new Particle(random(canvasWidth), random(canvasHeight), randomColor));
+      if (particleAmount >= 400) {
+        flowfield = new Flowfield(stepSize, canvasWidth, canvasHeight);
+        particles = [];
+        particleAmount = 0;
+        setRandomColor();
+        background(255);
       }
+      particles.push(new Particle(random(canvasWidth), random(canvasHeight), randomColor));
+      particleAmount++;
 
       for (let i = 0; i < particles.length; ++i) {
         let p = particles[i];
-        if (!pause)
-          p.physics();
-        p.removeLoose();
-        if (p.removeFlag)
+        if (p.removeFlag) {
           particles.splice(i, 1);
+        } else {
+          p.physics();
+          p.removeLoose();
+          p.render();
+        }
       }
     }
+  }
 
-    for (let i = 0; i < particles.length; ++i) {
-      particles[i].render();
-    }
+  if (frameCount % 10 === 0) {
+    noStroke();
+    fill(255);
+    rect(15, 5, 25, 25);
+    fill(0);
+    text(parseInt(frameRate()), 20, 20);
   }
 }
 
@@ -152,60 +134,33 @@ class Flowfield {
 class Particle {
   constructor(x, y, _randomColor) {
     this.position = createVector(x, y);
+    this.previousPosition;
 
-    this.vertices = [];
+    // this.vertices = [];
     this.moveSpeed = stepSize;
-
-    this.isMoving = true;
-    this.removeFlag = false;
     this.randomCol = color(red(_randomColor) + random(-colorVariation, colorVariation), blue(_randomColor) + random(-colorVariation, colorVariation), green(_randomColor) + random(-colorVariation, colorVariation));
   }
 
   render() {
     stroke(this.randomCol);
-    
-    beginShape();
-    for (let i = 0; i < this.vertices.length; ++i) {
-      let v = this.vertices[i];
-      vertex(v.x, v.y);
-    }
-    endShape();
+    noFill();
+    if (this.previousPosition)
+      line(this.previousPosition.x, this.previousPosition.y, this.position.x, this.position.y)
   }
 
   move() {
-    let index = 0;
-    let p;
-    try {
-      index = flowfield.getFlowPointByCanvasPosition(this.position);
-    } catch (e) {
-      print(e);
-      this.isMoving = false;
-    }
-    try {
-      p = flowfield.flowPoints[index];
-    } catch (e) {
-      print(e);
-      this.isMoving = false;
-    }
-    if (this.isMoving) {
-      let xMove = sin(p.r * TWO_PI) * this.moveSpeed + this.position.x;
-      let yMove = cos(p.r * TWO_PI) * this.moveSpeed + this.position.y;
+    if (!this.removeFlag) {
+      let rot = flowfield.flowPoints[flowfield.getFlowPointByCanvasPosition(this.position)].r;
+      let xMove = sin(rot * TWO_PI) * this.moveSpeed + this.position.x;
+      let yMove = cos(rot * TWO_PI) * this.moveSpeed + this.position.y;
       if (xMove >= 0 && xMove <= width && yMove >= 0 && yMove <= height) {
+        this.previousPosition = createVector(this.position.x, this.position.y);
         this.position.x = xMove;
         this.position.y = yMove;
       } else {
-        this.isMoving = false;
+        this.removeFlag = true;
       }
     }
-  }
-
-  addVertex() {
-    this.vertices.push(
-      {
-        x: this.position.x,
-        y: this.position.y
-      }
-    );
   }
 
   removeLoose() {
@@ -217,10 +172,8 @@ class Particle {
   }
 
   physics() {
-    if (this.isMoving) {
+    if (!this.removeFlag) {
       this.move();
-      if (this.isMoving)
-        this.addVertex();
     }
   }
 }
