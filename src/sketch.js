@@ -77,13 +77,13 @@ function draw() {
     }
   }
 
-  if (frameCount % 10 === 0) {
-    noStroke();
-    fill(255);
-    rect(15, 5, 25, 25);
-    fill(0);
-    text(parseInt(frameRate()), 20, 20);
-  }
+  // if (frameCount % 10 === 0) {
+  //   noStroke();
+  //   fill(255);
+  //   rect(15, 5, 25, 25);
+  //   fill(0);
+  //   text(parseInt(frameRate()), 20, 20);
+  // }
 }
 
 function setRandomColor() {
