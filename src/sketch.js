@@ -1,5 +1,5 @@
 // DECLARE GLOABAL VARIABLES
-let pause, particleAmount;
+let pause, particleAmount, randomColor, colorVariation;
 let particles = [];
 let flowfield;
 
@@ -17,6 +17,8 @@ let sliderMaxParticles, sliderSpeed;
 function inititalizeGlobalVariables() {
   // stepSize = parseInt(random(10, 20));
   stepSize = 15;
+  randomColor = color(random(140, 240), random(140, 240), random(140, 240));
+  colorVariation = 10;
   pause = false;
   particleAmount = 800;
 
@@ -33,6 +35,7 @@ let div;
 
 function setup() {
   div = document.querySelector('#wrapper');
+  colorMode(RGB);
 
   canvasWidth = ceil(div.clientWidth);
   canvasHeight = ceil(div.clientHeight);
@@ -69,6 +72,7 @@ function windowResized() {
   resizeCanvas(canvasWidth, canvasHeight);
   flowfield = new Flowfield(stepSize, canvasWidth, canvasHeight);
   particles = [];
+  randomColor = color(random(140, 200), random(140, 200), random(140, 200));
   pause = false;
 }
 
@@ -82,8 +86,9 @@ function draw() {
           // particles.splice(0, particles.length - particleAmount);
           flowfield = new Flowfield(stepSize, canvasWidth, canvasHeight);
           particles = [];
+          color = color(random(140, 240), random(140, 240), random(140, 240));
         }
-        particles.push(new Particle(random(canvasWidth), random(canvasHeight)));
+        particles.push(new Particle(random(canvasWidth), random(canvasHeight), randomColor));
       }
 
       for (let i = 0; i < particles.length; ++i) {
@@ -144,7 +149,7 @@ class Flowfield {
 }
 
 class Particle {
-  constructor(x, y) {
+  constructor(x, y, _randomColor) {
     this.position = createVector(x, y);
 
     this.vertices = [];
@@ -152,13 +157,12 @@ class Particle {
 
     this.isMoving = true;
     this.removeFlag = false;
-
-    this.color = color(random(140, 240), random(140, 240), random(140, 240));
+    this.randomCol = _randomColor;
   }
 
   render() {
     noFill();
-    stroke(this.color);
+    stroke(this.randomCol);
     beginShape();
     for (let i = 0; i < this.vertices.length; ++i) {
       let v = this.vertices[i];
